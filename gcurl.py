@@ -12,6 +12,15 @@ class CurlGUI:
         self.root.title("Curl GUI Manager")
         self.root.geometry("1200x800")
         
+        # Create menu bar
+        self.menu_bar = tk.Menu(self.root)
+        self.root.config(menu=self.menu_bar)
+        
+        # Add Help menu
+        help_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(label="About", command=self.show_about)
+        
         # Create main notebook for tabs
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -59,6 +68,31 @@ class CurlGUI:
         
         self.load_button = ttk.Button(self.execute_frame, text="Load Command", command=self.load_command)
         self.load_button.pack(side=tk.RIGHT, padx=5)
+
+    def show_about(self):
+        # Create a custom dialog to prevent wrapping
+        dialog = tk.Toplevel(self.root)
+        dialog.title("About")
+        dialog.geometry("400x200")
+        dialog.resizable(False, False)
+
+        # Center the dialog on the parent window
+        dialog.transient(self.root)
+        dialog.grab_set()
+
+        # Add the About information with a Label
+        about_info = "APP : Gcurl \n\nDEVELOPER : Ali Al-Kazaly aLiGeNiUs The Hackers \nVERSION : 1.0.0.0  (2025)"
+        label = tk.Label(dialog, text=about_info, font=("Arial", 12), justify="center")
+        label.pack(pady=20)
+
+        # Add an OK button to close the dialog
+        tk.Button(dialog, text="OK", command=dialog.destroy).pack(pady=10)
+
+        # Center the dialog relative to the root window
+        dialog.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() - dialog.winfo_width()) // 2
+        y = self.root.winfo_y() + (self.root.winfo_height() - dialog.winfo_height()) // 2
+        dialog.geometry(f"+{x}+{y}")
 
     def initialize_request_tab(self):
         # URL and method section
